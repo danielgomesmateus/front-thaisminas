@@ -66,12 +66,14 @@
     },
     mounted() {
       const slug = this.$route.params.slug
+
       axios
         .get(`http://localhost:8000/v1/projects/${ slug }`)
         .then(response => {
           this.data = response.data
         })
         .catch(e => {
+          this.$router.push({ path: '/pagina-nao-encontrada' })
           console.error(e.message)
         })
     }

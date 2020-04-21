@@ -68,11 +68,13 @@
           })
         })
         .catch(e => {
+          this.$router.push({ path: '/pagina-nao-encontrada' })
           console.error(e.message)
         })
     }
   }
 </script>
+
 <style>
   .image {
     float: left;
@@ -80,5 +82,8 @@
     background-repeat: no-repeat;
     background-position: center center;
     border: 1px solid #ebebeb;
+  }
+  .image:hover {
+    cursor: pointer;
   }
 </style>

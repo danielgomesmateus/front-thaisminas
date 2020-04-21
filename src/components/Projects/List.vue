@@ -1,6 +1,9 @@
 <template>  
   <v-row>
-    <v-col cols="12" md="12" v-if="title">
+    <v-col cols="12" md="12" v-if="error.value">
+      <alert :error="error" :type="type" />
+    </v-col>
+    <v-col cols="12" md="12" v-if="title && !error.value">
       <h1 class="headline content-title">
         {{ title }}
         <v-chip
@@ -46,40 +49,55 @@
 </template>
 
 <script>
+  import Alert from '../../components/Alerts/Alert'
   import axios from 'axios'
 
   export default {
     name: 'ListProjects',
+    components: {
+      'alert': Alert
+    },
     props: ['title', 'slug', 'display'],
     data() {
       return {
         projects: [],
-        count: 0
+        count: 0,
+        error: {
+          value: false,
+          message: ''
+        },
+        type: ''
+      }
+    },
+    methods: {
+      getData(url) {
+        axios
+          .get(url)
+          .then(response => {
+            if (response.data.results && response.data.results.length >= 1) {
+              this.projects = response.data.results
+              this.count = response.data.count
+            }
+            else if (response.data.projects && response.data.projects.length >= 1) {
+              this.projects = response.data.projects
+              this.count = response.data.projects.length
+            }
+            else {
+              this.error.value = true
+              this.error.message = 'Ainda não temos nenhum projeto publicado por aqui.'
+              this.type = 'warning'
+            }          
+          })
+          .catch(e => {
+            this.error.value = true
+            this.error.message = e.message
+            this.type = 'error'
+          })        
       }
     },
     mounted() {
       const url = this.slug ? `http://localhost:8000/v1/projects-categories/${ this.slug }` : `http://localhost:8000/v1/projects/`
-      
-      axios
-        .get(url)
-        .then(response => {
-          if (response.data.results && response.data.results.length >= 1) {
-            this.projects = response.data.results
-            this.count = response.data.count
-          }
-          else if (response.data.projects && response.data.projects.length >= 1) {
-            this.projects = response.data.projects
-            this.count = response.data.projects.length
-          }
-          else {
-            this.error.value = true
-            this.error.message = 'Ainda não temos nenhum projeto publicado por aqui.'
-          }          
-        })
-        .catch(e => {
-          this.error.value = true
-          this.error.message = e.message
-        })
+      this.getData(url)
     } 
   }
 </script>

@@ -2,6 +2,7 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 
 import Home from './views/Home'
+import PageNotFound from './views/PageNotFound'
 
 import Contacts from './views/Contacts/Contacts'
 
@@ -18,6 +19,9 @@ export default new VueRouter({
     mode: 'history',
     routes: [
         { path: '/', component: Home },
+        { path: '*', component: PageNotFound },
+        { path: '/pagina-nao-encontrada', component: PageNotFound },
+
         { path: '/fale-conosco', component: Contacts },
 
         { path: '/albums', component: ListAlbums },

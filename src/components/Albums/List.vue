@@ -1,6 +1,9 @@
 <template>  
   <v-row>    
-    <v-col cols="12" md="12" v-if="title">
+    <v-col cols="12" md="12" v-if="error.value">
+      <alert :error="error" :type="type" />
+    </v-col>
+    <v-col cols="12" md="12" v-if="title && !error.value">
       <h1 class="headline content-title">
         {{ title }}
         <v-chip
@@ -57,15 +60,24 @@
 </template>
 
 <script>
+  import Alert from '../../components/Alerts/Alert'
   import axios from 'axios'
   
   export default {
     name: 'ListAlbums',
+    components: {
+      'alert': Alert
+    },
     props: ['title'],
     data() {
       return {
         albums: [],
-        count: 0
+        count: 0,
+        error: {
+          value: false,
+          message: ''
+        },
+        type: ''
       }
     },
     mounted() {
@@ -79,11 +91,13 @@
           else {
             this.error.value = true
             this.error.message = 'Ainda não temos nenhum álbum publicado por aqui.'
+            this.type = 'warning'
           } 
         })
         .catch(e => {
           this.error.value = true
           this.error.message = e.message
+          this.type = 'error'
         })
     } 
   }
