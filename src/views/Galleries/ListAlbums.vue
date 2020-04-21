@@ -2,7 +2,7 @@
   <v-app>
     <v-container fluid>
       <v-row>
-        <v-col md="12">
+        <v-col cols="12" md="12">
           <v-alert
             dense
             border="left"
@@ -12,7 +12,7 @@
             {{ error.message }}
           </v-alert>
         </v-col>
-        <v-col md="4" v-for="(album, index) in data" :key="index">
+        <v-col cols="12" md="4" v-for="(album, index) in data" :key="index">
           <v-card
             class="mx-auto"
           >
@@ -64,9 +64,6 @@
           message: ''
         }
       }
-    },
-    methods: {
-
     },
     mounted() {
       axios

@@ -2,7 +2,7 @@
   <v-app>
     <v-container fluid>
       <v-row>
-        <v-col md="12">
+        <v-col cols="12" md="12">
           <v-alert
             dense
             border="left"

@@ -2,7 +2,7 @@
   <v-app>
     <v-container fluid>
       <v-row>
-        <v-col md="12">
+        <v-col cols="12" md="12">
           <h1 class="display-1 text-center">
             {{ data.name }}
           </h1>
@@ -11,11 +11,11 @@
     </v-container>
     <v-container>
       <v-row>
-        <v-col md="12">
+        <v-col cols="12" md="12">
           <div class="text-left" v-html="data.content">
           </div>
         </v-col>
-        <v-col md="12">
+        <v-col cols="12" md="12">
           <v-btn
             color="success"
             class="ma-2 white--text"
