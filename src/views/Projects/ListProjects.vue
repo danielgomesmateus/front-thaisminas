@@ -2,52 +2,38 @@
   <v-app>
     <v-container fluid>
       <v-row>
-        <v-col md="3">
+        <v-col md="12">
+          <v-alert
+            dense
+            border="left"
+            type="warning"
+            v-if="error.value"
+          >
+            {{ error.message }}
+          </v-alert>
+        </v-col>
+        <v-col md="4" v-for="(project, index) in data" :key="index">
           <v-card
             class="mx-auto"
           >
             <v-img
-              src="https://cdn.vuetifyjs.com/images/cards/sunshine.jpg"
-              height="200px"
+              :src="project.cover_image"
             ></v-img>
         
             <v-card-title>
-              Top western road trips
+              {{ project.name }}
             </v-card-title>
         
             <v-card-subtitle>
-              1,000 miles of wonder
+              {{ project.description_short }}
             </v-card-subtitle>
         
             <v-card-actions>
-              <v-btn text>Share</v-btn>
-        
-              <v-btn
-                color="purple"
-                text
-              >
-                Explore
-              </v-btn>
-        
-              <v-spacer></v-spacer>
-        
-              <v-btn
-                icon
-                @click="show = !show"
-              >
-                <v-icon>{{ show ? 'mdi-chevron-up' : 'mdi-chevron-down' }}</v-icon>
+              <v-btn small color="primary" dark @click="$router.push({ path: `/projeto/${ project.slug }` })">
+                <v-icon>mdi-magnify</v-icon> Visualizar
               </v-btn>
             </v-card-actions>
         
-            <v-expand-transition>
-              <div v-show="show">
-                <v-divider></v-divider>
-        
-                <v-card-text>
-                  I'm a thing. But, like most politicians, he promised more than he could deliver. You won't have time for sleeping, soldier, not with all the bed making you'll be doing. Then we'll go with that data file! Hey, you add a one and two zeros to that or we walk! You're going to do his laundry? I've got to find a way to escape.
-                </v-card-text>
-              </div>
-            </v-expand-transition>
           </v-card>
         </v-col>
       </v-row>
@@ -62,20 +48,27 @@
     data() {
       return {
         data: [],
-        show: false
+        error: {
+          value: false,
+          message: ''
+        }
       }
-    },
-    methods: {
-
     },
     mounted() {
       axios
-        .get(`https://api.thaisminas.com.br/v1/projects/`)
+        .get(`http://localhost:8000/v1/projects/`)
         .then(response => {
-          this.data = response.data
+          if (response.data.results && response.data.results.length >= 1) {
+            this.data = response.data.results
+          }
+          else {
+            this.error.value = true
+            this.error.message = 'Ainda não temos nenhum projeto publicado por aqui.'
+          }          
         })
         .catch(e => {
-          console.error(e.message)
+          this.error.value = true
+          this.error.message = e.message
         })
     }
   }
