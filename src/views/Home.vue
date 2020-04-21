@@ -1,42 +1,24 @@
 <template>
   <v-container fluid>
-    <v-row>
-      <v-col cols="12" md="12">
-        <list-projects :data="data" />
-      </v-col>
-    </v-row>
+    <list-projects :title="titleProjects" />
+    <list-albums :title="titleAlbums" />
   </v-container>
 </template>
 
 <script>
-import ListProjects from '../components/Projects/List'
-import axios from 'axios'
+  import ListProjects from '../components/Projects/List'
+  import ListAlbums from '../components/Albums/List'
 
-export default {
-  components: {
-    'list-projects': ListProjects
-  },
-  data() {
-    return {
-      data: []
+  export default {
+    components: {
+      'list-projects': ListProjects,
+      'list-albums': ListAlbums
+    },
+    data() {
+      return {
+        titleProjects: 'Conheça meus projetos',
+        titleAlbums: 'Fotos de eventos',
+      }
     }
-  },
-  mounted() {
-    axios
-      .get(`http://localhost:8000/v1/projects/`)
-      .then(response => {
-        if (response.data.results && response.data.results.length >= 1) {
-          this.data = response.data.results
-        }
-        else {
-          this.error.value = true
-          this.error.message = 'Ainda não temos nenhum projeto publicado por aqui.'
-        }          
-      })
-      .catch(e => {
-        this.error.value = true
-        this.error.message = e.message
-      })
-  }  
-}
+  }
 </script>

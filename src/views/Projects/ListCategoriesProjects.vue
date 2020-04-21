@@ -13,25 +13,34 @@
           </v-alert>
         </v-col>
       </v-row>
-      <list-albums :title="title" />
+      <list-projects :title="title" :slug="this.$route.params.slug" :display="display" :key="key" />
     </v-container>
   </v-app>
 </template>
 
 <script>
-  import ListAlbums from '../../components/Albums/List'
+  import ListProjects from '../../components/Projects/List'
 
   export default {
     components: {
-      'list-albums': ListAlbums
+      'list-projects': ListProjects
     },
     data() {
       return {
         title: '',
+        slug: '',
+        display: true,
+        key: 0,
         error: {
           value: false,
           message: ''
         }
+      }
+    },
+    watch: {
+      $route (to){
+        this.slug = to.params.slug
+        this.key += 1
       }
     }
   }

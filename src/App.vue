@@ -27,10 +27,47 @@
 
       <v-spacer></v-spacer>
 
-      <router-link to="/fale-conosco">
-        <span class="mr-2 text">Fale conosco</span>
-        <v-icon>mdi-email</v-icon>
-      </router-link>
+      <v-menu bottom left>
+        <template v-slot:activator="{ on }">
+          <v-btn
+            dark
+            icon
+            v-on="on"
+          >
+            <v-icon>mdi-dots-vertical</v-icon>
+          </v-btn>
+        </template>
+
+        <v-list>
+          <template v-for="(item, index) in items">
+            <v-list-item
+              v-if="item.action"
+              :key="item.title"
+              @click="$router.push({ path: item.path })"
+            >
+              <v-list-item-action>
+                <v-icon>{{ item.action }}</v-icon>
+              </v-list-item-action>
+
+              <v-list-item-content>
+                <v-list-item-title>{{ item.title }}</v-list-item-title>
+              </v-list-item-content>
+            </v-list-item>
+
+            <v-divider
+              v-else-if="item.divider"
+              :key="index"
+            ></v-divider>
+
+            <v-subheader
+              v-else-if="item.header"
+              :key="item.header"
+            >
+              {{ item.header }}
+            </v-subheader>
+          </template>
+        </v-list>
+      </v-menu>
     </v-app-bar>
 
     <v-content>
@@ -72,17 +109,49 @@
 </template>
 
 <script>
+  import axios from 'axios'
 
-export default {
-  name: 'App',
-  data: () => ({
-    icons: [
-      'fab fa-facebook',
-      'fab fa-twitter',
-      'fab fa-google-plus',
-      'fab fa-linkedin',
-      'fab fa-instagram',
-    ],
-  }),
-};
+  export default {
+    name: 'App',
+    data: () => ({
+      data: [],
+      categories: [],
+      icons: [
+        'fab fa-facebook',
+        'fab fa-twitter',
+        'fab fa-google-plus',
+        'fab fa-linkedin',
+        'fab fa-instagram',
+      ],
+      items: [
+        { title: 'Home', action: 'mdi-home', path: '/' },
+        { title: 'Projetos', action: 'mdi-projector', path: '/projetos' },
+        { title: 'Álbums', action: 'mdi-image-search-outline', path: '/albums'  },
+        { title: 'Fale Conosco', action: 'mdi-email-newsletter', path: '/fale-conosco'  },
+        { divider: true },
+        { header: 'Categorias de projeto' },
+        { divider: true },
+      ]
+    }),
+    mounted() {
+      axios
+        .get(`http://localhost:8000/v1/projects-categories/`)
+        .then(response => {
+          if (response.data.results && response.data.results.length >= 1) {
+            this.data = response.data.results
+            this.data.forEach(categorie => {
+              this.items.push({ title: categorie.name, action: 'mdi-label', path: `/projeto-categorias/${ categorie.slug }`  })
+            })
+          }
+          else {
+            this.error.value = true
+            this.error.message = 'Ainda não temos nenhum projeto publicado por aqui.'
+          }          
+        })
+        .catch(e => {
+          this.error.value = true
+          this.error.message = e.message
+        })    
+    }
+  };
 </script>

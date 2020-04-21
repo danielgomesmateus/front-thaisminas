@@ -1,15 +1,16 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 
-import Home from './views/Home.vue'
+import Home from './views/Home'
 
-import Contacts from './views/Contacts/Contacts.vue'
+import Contacts from './views/Contacts/Contacts'
 
-import ListProjects from './views/Projects/ListProjects.vue'
-import ViewProject from './views/Projects/ViewProject.vue'
+import ListProjects from './views/Projects/ListProjects'
+import ViewProject from './views/Projects/ViewProject'
+import ListCategoriesProjects from './views/Projects/ListCategoriesProjects'
 
-import ListAlbums from './views/Galleries/ListAlbums.vue'
-import ViewAlbum from './views/Galleries/ViewAlbum.vue'
+import ListAlbums from './views/Galleries/ListAlbums'
+import ViewAlbum from './views/Galleries/ViewAlbum'
 
 Vue.use(VueRouter)
 
@@ -23,6 +24,7 @@ export default new VueRouter({
         { path: '/album/:slug', component: ViewAlbum },
 
         { path: '/projetos', component: ListProjects },
-        { path: '/projeto/:slug', component: ViewProject }
+        { path: '/projeto/:slug', component: ViewProject },
+        { path: '/projeto-categorias/:slug', component: ListCategoriesProjects }
     ]
 })
