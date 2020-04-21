@@ -1,8 +1,8 @@
 <template>
   <v-container fluid>
     <v-row>
-      <v-col cols="12" md="12" v-if="error.value">
-        <alert :error="error" :type="type" />
+      <v-col cols="12" md="12" v-if="alert.value">
+        <alert :alert="alert" :type="type" />
       </v-col>
     </v-row>
   </v-container>
@@ -17,7 +17,7 @@
     },
     data() {
       return {
-        error: {
+        alert: {
           value: true,
           message: '404 - Página não encontrada.'
         },

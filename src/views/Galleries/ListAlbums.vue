@@ -7,9 +7,9 @@
             dense
             border="left"
             type="warning"
-            v-if="error.value"
+            v-if="alert.value"
           >
-            {{ error.message }}
+            {{ alert.message }}
           </v-alert>
         </v-col>
       </v-row>
@@ -28,7 +28,7 @@
     data() {
       return {
         title: '',
-        error: {
+        alert: {
           value: false,
           message: ''
         }

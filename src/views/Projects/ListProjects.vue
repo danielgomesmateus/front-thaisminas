@@ -16,7 +16,7 @@
     data() {
       return {
         title: '',
-        error: {
+        alert: {
           value: false,
           message: ''
         }

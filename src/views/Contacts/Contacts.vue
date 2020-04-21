@@ -2,6 +2,9 @@
   <v-app>
     <v-container fluid>
       <v-row>
+        <v-col cols="12" md="12" v-if="alert.value">
+          <alert :alert="alert" :type="type" />
+        </v-col>
         <v-col cols="12" md="6" offset-md="3">
           <v-form
             ref="form"
@@ -9,7 +12,7 @@
             lazy-validation
           >
             <v-text-field
-              v-model="name"
+              v-model="contact.name"
               :rules="nameRules"
               label="Nome"
               required
@@ -17,7 +20,7 @@
             ></v-text-field>
         
             <v-text-field
-              v-model="email"
+              v-model="contact.email"
               :rules="emailRules"
               label="Email"
               required
@@ -25,7 +28,8 @@
             ></v-text-field>
 
             <v-text-field
-              v-model="phone"
+              v-model="contact.phone"
+              v-mask="'(##)#####-####'"
               :rules="phoneRules"
               label="Telefone"
               required
@@ -33,7 +37,7 @@
             ></v-text-field>
 
             <v-textarea
-              v-model="message"
+              v-model="contact.message"
               :rules="messageRules"
               name="input-7-1"
               label="Mensagem"
@@ -44,6 +48,7 @@
             <v-btn
               color="success"
               class="mr-4"
+              :loading="loading"
               @click="save"
             >
               Enviar contato
@@ -57,43 +62,71 @@
 </template>
 
 <script>
+  import Alert from '../../components/Alerts/Alert'
   import axios from 'axios'
 
   export default {
+    components: {
+      'alert': Alert
+    },
     data: () => ({
       valid: true,
-      name: '',
+      loading: false,
+      alert: {
+        value: false,
+        message: ''
+      },
+      type: '',
+      contact: {
+        name: '',
+        email: '',
+        phone: '',
+        message: ''
+      },
       nameRules: [
         v => !!v || 'Informe o seu nome completo',
         v => (v && v.length >= 3) || 'O nome informado é inválido',
       ],
-      email: '',
       emailRules: [
         v => !!v || 'Informe um email válido',
         v => /.+@.+\..+/.test(v) || 'Email inválido',
       ],
-      phone: '',
       phoneRules: [
         v => !!v || 'Informe o seu telefone de contato',
         v => (v && v.length <= 16) || 'O telefone informado é inválido',        
       ],
-      message: '',
       messageRules: [
         v => !!v || 'Informe o motivo do contato',
-        v => (v && v.length <= 10) || 'O motivo do contato é inválido',         
+        v => (v && v.length >= 10) || 'O motivo do contato é inválido',         
       ]
     }),
     methods: {
       validate () {
-        this.$refs.form.validate()
+        return this.$refs.form.validate()
       },
       save () {
-        console.log(this.validate())
         if (this.validate()) {
+          this.loading = true
+
           axios
-            .post(`https://api.thaisminas.com.br/v1/contacts/`)
+            .post(`http://localhost:8000/v1/contacts/`, this.contact)
             .then(response => {
-              console.log(response)
+              if (response.status == 201) {
+                this.$refs.form.reset()
+
+                this.alert.value = true
+                this.alert.message = 'Mensagem enviada com sucesso'
+                this.type = 'success'
+
+                this.loading = false
+              }
+            })
+            .catch(e => {
+              this.alert.value = true
+              this.alert.message = e.message
+              this.type = 'error'
+
+              this.loading = false
             })
         }
       }

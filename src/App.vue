@@ -144,13 +144,13 @@
             })
           }
           else {
-            this.error.value = true
-            this.error.message = 'Ainda não temos nenhum projeto publicado por aqui.'
+            this.alert.value = true
+            this.alert.message = 'Ainda não temos nenhum projeto publicado por aqui.'
           }          
         })
         .catch(e => {
-          this.error.value = true
-          this.error.message = e.message
+          this.alert.value = true
+          this.alert.message = e.message
         })    
     }
   };

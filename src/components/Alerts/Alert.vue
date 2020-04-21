@@ -5,9 +5,9 @@
         dense
         border="left"
         :type="type"
-        v-if="error.value"
+        v-if="alert.value"
       >
-        {{ error.message }}
+        {{ alert.message }}
       </v-alert>
     </v-col>
   </v-row>
@@ -16,6 +16,6 @@
 <script>  
   export default {
     name: 'Alert',
-    props: ['error', 'type']
+    props: ['alert', 'type']
   }
 </script>

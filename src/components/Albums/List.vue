@@ -1,9 +1,9 @@
 <template>  
   <v-row>    
-    <v-col cols="12" md="12" v-if="error.value">
-      <alert :error="error" :type="type" />
+    <v-col cols="12" md="12" v-if="alert.value">
+      <alert :alert="alert" :type="type" />
     </v-col>
-    <v-col cols="12" md="12" v-if="title && !error.value">
+    <v-col cols="12" md="12" v-if="title && !alert.value">
       <h1 class="headline content-title">
         {{ title }}
         <v-chip
@@ -73,7 +73,7 @@
       return {
         albums: [],
         count: 0,
-        error: {
+        alert: {
           value: false,
           message: ''
         },
@@ -89,14 +89,14 @@
             this.count = response.data.count
           }
           else {
-            this.error.value = true
-            this.error.message = 'Ainda não temos nenhum álbum publicado por aqui.'
+            this.alert.value = true
+            this.alert.message = 'Ainda não temos nenhum álbum publicado por aqui.'
             this.type = 'warning'
           } 
         })
         .catch(e => {
-          this.error.value = true
-          this.error.message = e.message
+          this.alert.value = true
+          this.alert.message = e.message
           this.type = 'error'
         })
     } 
