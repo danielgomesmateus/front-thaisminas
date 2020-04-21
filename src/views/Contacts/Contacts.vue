@@ -2,7 +2,7 @@
   <v-app>
     <v-container fluid>
       <v-row>
-        <v-col md="6" offset-md="3">
+        <v-col cols="12" md="6" offset-md="3">
           <v-form
             ref="form"
             v-model="valid"
@@ -92,6 +92,9 @@
         if (this.validate()) {
           axios
             .post(`https://api.thaisminas.com.br/v1/contacts/`)
+            .then(response => {
+              console.log(response)
+            })
         }
       }
     },
