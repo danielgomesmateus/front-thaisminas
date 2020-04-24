@@ -16,10 +16,6 @@
     data() {
       return {
         title: '',
-        alert: {
-          value: false,
-          message: ''
-        }
       }
     }
   }

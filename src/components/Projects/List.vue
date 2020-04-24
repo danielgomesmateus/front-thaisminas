@@ -4,7 +4,7 @@
       <alert :alert="alert" :type="type" />
     </v-col>
     <v-col cols="12" md="12" v-if="title && !alert.value">
-      <h1 class="headline content-title">
+      <h1 class="title content-title">
         {{ title }}
         <v-chip
           class="float-right"
@@ -38,8 +38,8 @@
         </v-card-subtitle>
     
         <v-card-actions>
-          <v-btn small color="primary" dark @click="$router.push({ path: `/projeto/${ project.slug }` })">
-            <v-icon>mdi-magnify</v-icon> Visualizar
+          <v-btn small color="info" dark @click="$router.push({ path: `/projeto/${ project.slug }` })">
+            <v-icon>mdi-magnify</v-icon>  <span class="font-weight-bold">Visualizar</span>
           </v-btn>
         </v-card-actions>
     
@@ -104,7 +104,7 @@
 
 <style>
   .content-title {
-    background: #1565C0;
+    background: #757575;
     color: #FFF;
     padding: 8px;
     border-radius: 3px;
