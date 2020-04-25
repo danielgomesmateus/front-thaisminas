@@ -1,16 +1,16 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 
-import * as pages from '@/store/modules/pages'
-import * as categories from '@/store/modules/categoriesProjects'
+import * as page from './modules/page'
+import * as ProjectCategory from './modules/projectCategory'
 
 Vue.use(Vuex)
 
 export default new Vuex.Store({
-    modules: {
-      pages,
-      categories
-    },
-    state: {
-    }
+  modules: {
+    page,
+    ProjectCategory
+  },
+  state: {
+  }
 })

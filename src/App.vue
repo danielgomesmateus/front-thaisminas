@@ -116,7 +116,7 @@
 
 <script>
   import Help from './components/Dialogs/Help'
-  import axios from 'axios'
+  import store from './store/store'
 
   export default {
     name: 'App',
@@ -145,24 +145,12 @@
       contact: true
     }),
     mounted() {
-      axios
-        .get(`${ process.env.VUE_APP_BASE_URL_API }projects-categories/`)
-        .then(response => {
-          if (response.data.results && response.data.results.length >= 1) {
-            this.data = response.data.results
-            this.data.forEach(categorie => {
-              this.items.push({ title: categorie.name, action: 'mdi-label', path: `/projeto-categorias/${ categorie.slug }`  })
-            })
-          }
-          else {
-            this.alert.value = true
-            this.alert.message = 'Ainda não temos nenhum projeto publicado por aqui.'
-          }          
-        })
+      store.dispatch('getPages')
         .catch(e => {
           this.alert.value = true
           this.alert.message = e.message
-        })    
+          this.alert.type = 'error'
+        })
     }
   };
 </script>
