@@ -26,35 +26,14 @@
               min="0"
               max="20"
             ></v-slider>
-            <v-radio-group v-model="payment">
-              <template v-slot:label>
-                <div>Onde deseja realizar o <strong>pagamento</strong>?</div>
-              </template>
-              <v-radio value="pagseguro">
-                <template v-slot:label>
-                  <div>Doar com <strong class="success--text">PagSeguro</strong></div>
-                </template>
-              </v-radio>
-              <v-radio value="paypal" disabled>
-                <template v-slot:label>
-                  <div>Doar com <strong class="primary--text">PayPal</strong></div>
-                </template>
-              </v-radio>
-            </v-radio-group>            
-            <v-btn
-              class="ma-2"
-              :loading="loading"
-              :disabled="loading"
-              color="success"
-              @click="loader = 'loading'"
-            >
-              Doar
-            </v-btn>
+
           </v-col>
           <v-divider></v-divider>
         </div>
         <div v-if="contact">
-          <contact :title="title" />  
+          <v-col cols="12" md="12">
+            <contact :title="title" />  
+          </v-col>
         </div>
       </v-card>
     </v-dialog>     
@@ -74,18 +53,8 @@
       return {
         dialog: false,
         slider: 0,
-        loader: null,
-        loading: false,
-        payment: 'pagseguro',
         title: 'Dúvidas ou elogios? Fale conosco'
       }
-    },
-    watch: {
-      loader () {
-        const l = this.loader
-        this[l] = !this[l]
-        this.loader = null
-      },
-    },
+    }
   }
 </script>
