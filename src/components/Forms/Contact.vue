@@ -112,7 +112,7 @@
           this.loading = true
 
           axios
-            .post(`http://localhost:8000/v1/contacts/`, this.contact)
+            .post(`${ process.env.VUE_APP_BASE_URL_API }contacts/`, this.contact)
             .then(response => {
               if (response.status == 201) {
                 this.$refs.form.reset()

@@ -59,7 +59,7 @@
     mounted() {
       const slug = this.$route.params.slug
       axios
-        .get(`http://localhost:8000/v1/galleries/${ slug }`)
+        .get(`${ process.env.VUE_APP_BASE_URL_API }galleries/${ slug }`)
         .then(response => {
           this.data = response.data
           this.data.photos.forEach(image => {

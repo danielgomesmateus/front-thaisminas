@@ -82,7 +82,7 @@
     },
     mounted() {
       axios
-        .get(`http://localhost:8000/v1/galleries/`)
+        .get(`${ process.env.VUE_APP_BASE_URL_API }galleries/`)
         .then(response => {
           if (response.data.results && response.data.results.length >= 1) {
             this.albums = response.data.results

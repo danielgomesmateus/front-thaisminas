@@ -96,7 +96,7 @@
       }
     },
     mounted() {
-      const url = this.slug ? `http://localhost:8000/v1/projects-categories/${ this.slug }` : `http://localhost:8000/v1/projects/`
+      const url = this.slug ? `${ process.env.VUE_APP_BASE_URL_API }projects-categories/${ this.slug }` : `${ process.env.VUE_APP_BASE_URL_API }projects/`
       this.getData(url)
     } 
   }

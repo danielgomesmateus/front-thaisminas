@@ -68,7 +68,7 @@
       const slug = this.$route.params.slug
 
       axios
-        .get(`http://localhost:8000/v1/projects/${ slug }`)
+        .get(`${ process.env.VUE_APP_BASE_URL_API }projects/${ slug }`)
         .then(response => {
           this.data = response.data
         })

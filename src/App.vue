@@ -146,7 +146,7 @@
     }),
     mounted() {
       axios
-        .get(`http://localhost:8000/v1/projects-categories/`)
+        .get(`${ process.env.VUE_APP_BASE_URL_API }projects-categories/`)
         .then(response => {
           if (response.data.results && response.data.results.length >= 1) {
             this.data = response.data.results

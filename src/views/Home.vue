@@ -49,7 +49,7 @@
     },
     mounted() {
       axios
-        .get(`http://localhost:8000/v1/slides/`)
+        .get(`${ process.env.VUE_APP_BASE_URL_API }slides/`)
         .then(response => {
           if (response.data.results && response.data.results.length >= 1) {
             response.data.results.forEach(image => {
