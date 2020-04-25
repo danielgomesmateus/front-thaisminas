@@ -6,13 +6,13 @@
     </div>
     <v-dialog v-model="dialog" fullscreen hide-overlay transition="dialog-bottom-transition">
       <v-card>
+        <v-toolbar dark color="primary">
+          <v-btn icon dark @click="dialog = false">
+          <v-icon>mdi-close</v-icon>
+          </v-btn>
+          <v-toolbar-title>Como você pode nos ajudar?</v-toolbar-title>
+        </v-toolbar>
         <div v-if="donation">
-          <v-toolbar dark color="primary">
-            <v-btn icon dark @click="dialog = false">
-            <v-icon>mdi-close</v-icon>
-            </v-btn>
-            <v-toolbar-title>Como você pode nos ajudar?</v-toolbar-title>
-          </v-toolbar>
           <v-col cols="12" md="12">
             <h1 class="title text-center">
               Escolha um valor abaixo e faça uma doação
