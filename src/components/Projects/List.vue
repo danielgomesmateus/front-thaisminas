@@ -1,7 +1,7 @@
 <template>  
   <v-row>
-    <v-col cols="12" md="12" v-if="alert.value">
-      <alert :alert="alert" :type="type" />
+    <v-col cols="12" md="12" v-if="alert.value">    
+      <alert :alert="alert" v-if="alert.value" />
     </v-col>
     <v-col cols="12" md="12" v-if="title && !alert.value">
       <h1 class="title content-title">
@@ -64,9 +64,9 @@
         count: 0,
         alert: {
           value: false,
-          message: ''
-        },
-        type: ''
+          message: '',
+          type: ''
+        }
       }
     },
     methods: {
@@ -85,13 +85,13 @@
             else {
               this.alert.value = true
               this.alert.message = 'Ainda não temos nenhum projeto publicado por aqui.'
-              this.type = 'warning'
+              this.alert.type = 'warning'
             }          
           })
           .catch(e => {
             this.alert.value = true
             this.alert.message = e.message
-            this.type = 'error'
+            this.alert.type = 'error'
           })        
       }
     },
@@ -104,7 +104,7 @@
 
 <style>
   .content-title {
-    background: #757575;
+    background: #FF9100;
     color: #FFF;
     padding: 8px;
     border-radius: 3px;

@@ -1,11 +1,11 @@
-<template>    
+<template>
   <v-row>
-    <v-col cols="12" md="12">
+    <v-col cols="12" md="12">    
       <v-alert
         dense
+        dismissible
         border="left"
-        :type="type"
-        v-if="alert.value"
+        :type="alert.type"
       >
         {{ alert.message }}
       </v-alert>
@@ -16,6 +16,6 @@
 <script>  
   export default {
     name: 'Alert',
-    props: ['alert', 'type']
+    props: ['alert']
   }
 </script>

@@ -1,33 +1,25 @@
 <template>
   <v-container fluid>
-    <alert :alert="alert" :type="type" v-if="alert.value" />
-    <b-carousel
-      v-if="images.length >= 1"
-      id="carousel"
-      v-model="slide"
-      :interval="4000"
-      controls
-      indicators
-      background="#ababab"
-      style="text-shadow: 1px 1px 2px #333;"
-    >
-      <b-carousel-slide
-        v-for="(image, index) in images"
-        :key="index"
-        :caption="image.title"
-        :text="image.description_short"
-        :img-src="image.image"
-      ></b-carousel-slide>
-    </b-carousel>
+    <v-row>
+      <v-col cols="12" md="12" v-if="alert.value">
+        <alert :alert="alert" />
+      </v-col>
+    </v-row>
+    <v-row>
+      <v-carousel :show-arrows="true" v-if="images.length >= 1">
+        <v-carousel-item
+          v-for="(image, index) in images"
+          :key="index"
+          :src="image.src"
+        ></v-carousel-item>
+      </v-carousel>
+    </v-row>
     <list-projects :title="titleProjects" />
     <list-albums :title="titleAlbums" />
   </v-container>
 </template>
 
 <script>
-  import 'bootstrap/dist/css/bootstrap.css'
-  import 'bootstrap-vue/dist/bootstrap-vue.css'
-
   import Alert from '../components/Alerts/Alert'  
   import ListProjects from '../components/Projects/List'
   import ListAlbums from '../components/Albums/List'
@@ -47,10 +39,12 @@
         images: [],
         alert: {
           value: false,
-          message: ''
+          message: '',
+          type: ''
         },
-        type: '',
-        slide: 0
+        slide: 0,
+        donation: true,
+        contact: true
       }
     },
     mounted() {
@@ -58,13 +52,15 @@
         .get(`http://localhost:8000/v1/slides/`)
         .then(response => {
           if (response.data.results && response.data.results.length >= 1) {
-            this.images = response.data.results
+            response.data.results.forEach(image => {
+              this.images.push({ src: image.image })
+            })
           }
         })
         .catch(e => {
           this.alert.value = true
           this.alert.message = e.message
-          this.type = 'error'
+          this.alert.type = 'error'
         })
     }
   }
