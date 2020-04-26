@@ -116,7 +116,6 @@
 
 <script>
   import Help from './components/Dialogs/Help'
-  import store from './store/store'
 
   export default {
     name: 'App',
@@ -143,14 +142,6 @@
       ],
       donation: true,
       contact: true
-    }),
-    mounted() {
-      store.dispatch('getPages')
-        .catch(e => {
-          this.alert.value = true
-          this.alert.message = e.message
-          this.alert.type = 'error'
-        })
-    }
+    })
   };
 </script>

@@ -1,22 +1,22 @@
-import ProjectCategory from '../../services/ProjectCategoryService'
+import ProjectCategoryService from '../../services/ProjectCategoryService'
 
 export const state = {
   projectsCategories: [],
-  page: {}
+  projectCategory: {}
 }
 
 export const mutations = {
   SET_PROJECT_CATEGORIES(state, projectsCategories) {
     state.projectsCategories = projectsCategories
   },
-  SET_PROJECT_CATEGORY(state, page) {
-    state.page = page
+  SET_PROJECT_CATEGORY(state, projectCategory) {
+    state.projectCategory = projectCategory
   }
 }
 
 export const actions = {
-  getPages({ commit }) {  
-    return ProjectCategory.getPages()
+  getProjectsCategories({ commit }) {  
+    return ProjectCategoryService.getProjectsCategories()
       .then(response => {
         commit('SET_PROJECT_CATEGORIES', response.data)
       })
@@ -24,19 +24,19 @@ export const actions = {
         console.log(e.message)
       })
   },
-  getPageBySlug({ commit, state }, slug) {
-    if (slug == state.page.slug) {
-      return state.page
+  getProjectCategoryBySlug({ commit, state }, slug) {
+    if (slug == state.projectCategory.slug) {
+      return state.projectCategory
     }
 
-    let page = getters.getPageBySlug(slug)
+    let projectCategory = getters.getProjectCategoryBySlug(slug)
 
-    if (page) {
-      commit('SET_PROJECT_CATEGORY', page)
-      return page
+    if (projectCategory) {
+      commit('SET_PROJECT_CATEGORY', projectCategory)
+      return projectCategory
     }
 
-    return ProjectCategory.getPageBySlug(slug)
+    return ProjectCategoryService.getProjectCategoryBySlug(slug)
       .then(response => {
         commit('SET_PROJECT_CATEGORY', response.data)
         return response.data
@@ -45,10 +45,10 @@ export const actions = {
 }
 
 export const getters = {
-  getPages: state => {
+  getProjectsCategories: state => {
     return state.projectsCategories
   },  
-  getPageBySlug: state => slug => {
-    return state.projectsCategories.find(page => page.slug == slug)
+  getProjectCategoryBySlug: state => slug => {
+    return state.projectsCategories.find(projectCategory => projectCategory.slug == slug)
   }
 }

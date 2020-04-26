@@ -24,7 +24,7 @@
   import ListProjects from '../components/Projects/List'
   import ListAlbums from '../components/Albums/List'
 
-  import axios from 'axios'
+  import store from '../store/store'
 
   export default {
     components: {
@@ -48,19 +48,18 @@
       }
     },
     mounted() {
-      axios
-        .get(`${ process.env.VUE_APP_BASE_URL_API }slides/`)
-        .then(response => {
-          if (response.data.results && response.data.results.length >= 1) {
-            response.data.results.forEach(image => {
-              this.images.push({ src: image.image })
-            })
-          }
-        })
+      store.dispatch('getPages')
         .catch(e => {
           this.alert.value = true
           this.alert.message = e.message
           this.alert.type = 'error'
+        })
+
+      store.dispatch('getProjectsCategories')
+        .catch(e => {
+          this.alert.value = true
+          this.alert.message = e.message
+          this.alert.type = 'error'          
         })
     }
   }
