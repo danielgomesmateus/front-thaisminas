@@ -1,5 +1,7 @@
 import PageService from '../../services/PageService'
 
+export const namespaced = true
+
 export const state = {
   pages: [],
   page: {}

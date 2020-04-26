@@ -48,14 +48,20 @@
       }
     },
     mounted() {
-      store.dispatch('getPages')
+      store.dispatch('page/getPages')
+        .then(() => {
+
+        })
         .catch(e => {
           this.alert.value = true
           this.alert.message = e.message
           this.alert.type = 'error'
         })
 
-      store.dispatch('getProjectsCategories')
+      store.dispatch('projectCategory/getProjectsCategories')
+        .then(() => {
+          
+        })
         .catch(e => {
           this.alert.value = true
           this.alert.message = e.message

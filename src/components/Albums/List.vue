@@ -61,7 +61,9 @@
 
 <script>
   import Alert from '../../components/Alerts/Alert'
-  import axios from 'axios'
+  
+  import store from '../../store/store'
+  import { mapGetters } from 'vuex'
   
   export default {
     name: 'ListAlbums',
@@ -80,13 +82,18 @@
         }
       }
     },
+    computed: {
+      ...mapGetters({
+        getAlbums: 'album/getAlbums',
+        getAlbumBySlug: 'album/getAlbumBySlug'
+      })
+    },
     mounted() {
-      axios
-        .get(`${ process.env.VUE_APP_BASE_URL_API }galleries/`)
-        .then(response => {
-          if (response.data.results && response.data.results.length >= 1) {
-            this.albums = response.data.results
-            this.count = response.data.count
+      store.dispatch('album/getAlbums')
+        .then(() => {
+          if (this.getAlbums.results && this.getAlbums.results.length >= 1) {
+            this.albums = this.getAlbums.results
+            this.count = this.getAlbums.count
           }
           else {
             this.alert.value = true

@@ -1,5 +1,7 @@
 import ProjectCategoryService from '../../services/ProjectCategoryService'
 
+export const namespaced = true
+
 export const state = {
   projectsCategories: [],
   projectCategory: {}

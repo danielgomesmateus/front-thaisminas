@@ -50,7 +50,9 @@
 
 <script>
   import Alert from '../../components/Alerts/Alert'
-  import axios from 'axios'
+
+  import store from '../../store/store'
+  import { mapGetters } from 'vuex'
 
   export default {
     name: 'ListProjects',
@@ -69,35 +71,30 @@
         }
       }
     },
-    methods: {
-      getData(url) {
-        axios
-          .get(url)
-          .then(response => {
-            if (response.data.results && response.data.results.length >= 1) {
-              this.projects = response.data.results
-              this.count = response.data.count
-            }
-            else if (response.data.projects && response.data.projects.length >= 1) {
-              this.projects = response.data.projects
-              this.count = response.data.projects.length
-            }
-            else {
-              this.alert.value = true
-              this.alert.message = 'Ainda não temos nenhum projeto publicado por aqui.'
-              this.alert.type = 'warning'
-            }          
-          })
-          .catch(e => {
-            this.alert.value = true
-            this.alert.message = e.message
-            this.alert.type = 'error'
-          })        
-      }
+    computed: {
+      ...mapGetters({
+        getProjects: 'project/getProjects',
+        getProjectBySlug: 'project/getProjectBySlug'
+      })
     },
     mounted() {
-      const url = this.slug ? `${ process.env.VUE_APP_BASE_URL_API }projects-categories/${ this.slug }` : `${ process.env.VUE_APP_BASE_URL_API }projects/`
-      this.getData(url)
+      store.dispatch('project/getProjects')
+        .then(() => {
+          if (this.getProjects.results && this.getProjects.results.length >= 1) {
+            this.projects = this.getProjects.results
+            this.count = this.getProjects.count          
+          }
+          else {
+            this.alert.value = true
+            this.alert.message = 'Ainda não temos nenhum projeto publicado por aqui.'
+            this.alert.type = 'warning'            
+          }
+        })
+        .catch(e => {
+          this.alert.value = true
+          this.alert.message = e.message
+          this.alert.type = 'error'          
+        })
     } 
   }
 </script>
