@@ -1,9 +1,9 @@
 <template>  
   <v-row>
-    <v-col cols="12" md="12" v-if="alert.value">    
-      <alert :alert="alert" v-if="alert.value" />
+    <v-col cols="12" md="12" v-if="projects.count == 0">    
+      <alert :alert="alert" />
     </v-col>
-    <v-col cols="12" md="12" v-if="title && !alert.value">
+    <v-col cols="12" md="12" v-if="title && projects.count >= 1">
       <h1 class="title content-title">
         {{ title }}
         <v-chip
@@ -15,13 +15,13 @@
             left
             class="green darken-4"
           >
-            {{ count }}
+            {{ projects.count }}
           </v-avatar>
           projetos
         </v-chip>
       </h1>
     </v-col>
-    <v-col cols="12" md="4" v-for="(project, index) in projects" :key="index">
+    <v-col cols="12" md="4" v-for="(project, index) in projects.results" :key="index">
       <v-card
         class="mx-auto"
       >
@@ -51,51 +51,21 @@
 <script>
   import Alert from '../../components/Alerts/Alert'
 
-  import store from '../../store/store'
-  import { mapGetters } from 'vuex'
-
   export default {
     name: 'ListProjects',
     components: {
       'alert': Alert
     },
-    props: ['title', 'slug', 'display'],
+    props: ['title', 'projects'],
     data() {
       return {
-        projects: [],
-        count: 0,
         alert: {
-          value: false,
-          message: '',
-          type: ''
+          value: true,
+          type: 'warning',
+          message: 'Nenhum projeto publicado por aqui ainda.'
         }
       }
-    },
-    computed: {
-      ...mapGetters({
-        getProjects: 'project/getProjects',
-        getProjectBySlug: 'project/getProjectBySlug'
-      })
-    },
-    mounted() {
-      store.dispatch('project/getProjects')
-        .then(() => {
-          if (this.getProjects.results && this.getProjects.results.length >= 1) {
-            this.projects = this.getProjects.results
-            this.count = this.getProjects.count          
-          }
-          else {
-            this.alert.value = true
-            this.alert.message = 'Ainda não temos nenhum projeto publicado por aqui.'
-            this.alert.type = 'warning'            
-          }
-        })
-        .catch(e => {
-          this.alert.value = true
-          this.alert.message = e.message
-          this.alert.type = 'error'          
-        })
-    } 
+    }
   }
 </script>
 

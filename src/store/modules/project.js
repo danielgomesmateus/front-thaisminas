@@ -4,7 +4,8 @@ export const namespaced = true
 
 export const state = {
   projects: [],
-  project: {}
+  project: {},
+  count: 0
 }
 
 export const mutations = {

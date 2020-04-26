@@ -56,7 +56,7 @@
         count_photos: 0
       }
     },
-    mounted() {
+    created() {
       const slug = this.$route.params.slug
       axios
         .get(`${ process.env.VUE_APP_BASE_URL_API }galleries/${ slug }`)

@@ -64,7 +64,7 @@
         this.dialog =  true
       }
     },
-    mounted() {
+    created() {
       const slug = this.$route.params.slug
 
       axios
