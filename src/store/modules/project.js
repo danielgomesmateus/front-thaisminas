@@ -6,8 +6,7 @@ export const namespaced = true
 
 export const state = {
   projects: [],
-  project: {},
-  count: 0
+  project: {}
 }
 
 export const mutations = {
@@ -29,22 +28,27 @@ export const actions = {
         console.log(e.message)
       })
   },
-  getProjectBySlug({ commit, state }, slug) {
+  getProjectBySlug({ commit, getters, state }, slug) {
     if (slug == state.project.slug) {
       return state.project
     }
 
-    let project = getters.getProjectBySlug(slug)
+    if (state.projects.count >= 1) {
+      let project = getters.getProjectBySlug(slug)
 
-    if (project) {
-      commit('SET_PROJECT', project)
-      return project
+      if (project) {
+        commit('SET_PROJECT', project)
+        return project
+      }
     }
 
     return ProjectService.getProjectBySlug(slug)
       .then(response => {
         commit('SET_PROJECT', response.data)
         return response.data
+      })
+      .catch(e => {
+        console.error(e.message)
       })
   }
 }

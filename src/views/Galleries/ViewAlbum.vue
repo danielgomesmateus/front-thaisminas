@@ -4,8 +4,11 @@
       <v-row>
         <v-col cols="12" md="12">
           <h1 class="display-1 text-center">
-            {{ data.name }}
+            {{ album.name }}
           </h1>
+          <h2 class="subtitle-1 text-center">
+            {{ album.description_short }}
+          </h2>
           <div class="text-center">
             <v-chip
               class="ma-2"
@@ -40,7 +43,6 @@
   </v-app>
 </template>
 <script>
-  import axios from 'axios'
   import VueGallery from 'vue-gallery'
 
   export default {
@@ -49,23 +51,25 @@
     },
     data() {
       return {
-        data: [],
         dialog: false,
-        images: [],
         index: null,
+        album: {},
+        images: [],
         count_photos: 0
       }
     },
     created() {
       const slug = this.$route.params.slug
-      axios
-        .get(`${ process.env.VUE_APP_BASE_URL_API }galleries/${ slug }`)
-        .then(response => {
-          this.data = response.data
-          this.data.photos.forEach(image => {
+
+      this.$store.dispatch('album/getAlbumBySlug', slug)
+        .then(album => {
+          this.album = album
+
+          album.photos.forEach(image => {
             this.images.push(image.photo)
-            this.count_photos = this.images.length
           })
+
+          this.count_photos = this.images.length
         })
         .catch(e => {
           this.$router.push({ path: '/pagina-nao-encontrada' })

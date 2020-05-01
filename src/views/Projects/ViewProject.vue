@@ -50,12 +50,11 @@
   </v-app>
 </template>
 <script>
-  import { mapGetters } from 'vuex'
-
   export default {
     data() {
       return {
-        dialog: false
+        dialog: false,
+        project: {}
       }
     },
     methods: {
@@ -63,18 +62,13 @@
         this.dialog =  true
       }
     },
-    computed: {
-      ...mapGetters({
-        getProjectBySlug: 'project/getProjectBySlug'
-      }),
-      project() {
-        return this.getProjectBySlug
-      }
-    },
     created() {
       const slug = this.$route.params.slug
 
       this.$store.dispatch('project/getProjectBySlug', slug)
+        .then(project => {
+          this.project = project
+        })
         .catch(e => {
           this.$router.push({ path: '/pagina-nao-encontrada' })
           console.error(e.message)

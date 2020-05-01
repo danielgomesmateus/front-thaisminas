@@ -1,5 +1,7 @@
 import AlbumService from '../../services/AlbumService'
 
+import _ from 'lodash'
+
 export const namespaced = true
 
 export const state = {
@@ -26,22 +28,27 @@ export const actions = {
         console.log(e.message)
       })
   },
-  getAlbumBySlug({ commit, state }, slug) {
+  getAlbumBySlug({ commit, getters, state }, slug) {
     if (slug == state.album.slug) {
       return state.album
     }
 
-    let album = getters.getAlbumBySlug(slug)
+    if (state.albums.count >= 1) {
+      let album = getters.getAlbumBySlug(slug)
 
-    if (album) {
-      commit('SET_ALBUM', album)
-      return album
+      if (album) {
+        commit('SET_ALBUM', album)
+        return album
+      }  
     }
 
     return AlbumService.getAlbumBySlug(slug)
       .then(response => {
         commit('SET_ALBUM', response.data)
         return response.data
+      })
+      .catch(e => {
+        console.error(e.message)
       })
   }
 }
@@ -51,6 +58,7 @@ export const getters = {
     return state.albums
   },  
   getAlbumBySlug: state => slug => {
-    return state.albums.find(album => album.slug == slug)
+    const albums = state.albums.results
+    return _.find(albums, function(album) { return album.slug == slug })
   }
 }

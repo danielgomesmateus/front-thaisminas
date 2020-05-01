@@ -38,7 +38,7 @@
         </v-card-subtitle>
     
         <v-card-actions>
-          <v-btn small color="info" dark @click="$router.push({ path: `/projeto/${ project.slug }` })">
+          <v-btn small color="info" dark @click="$router.push({ path: `/projeto/${ project.slug }` }).catch(err => {})">
             <v-icon>mdi-magnify</v-icon>  <span class="font-weight-bold">Visualizar</span>
           </v-btn>
         </v-card-actions>

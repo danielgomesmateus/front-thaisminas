@@ -50,7 +50,7 @@
         </v-card-text>
 
         <v-card-actions>
-          <v-btn small color="info" dark @click="$router.push({ path: `/album/${ album.slug }` })">
+          <v-btn small color="info" dark @click="$router.push({ path: `/album/${ album.slug }` }).catch(err => {})">
             <v-icon>mdi-magnify</v-icon> <span class="font-weight-bold">Visualizar</span>
           </v-btn>
         </v-card-actions>

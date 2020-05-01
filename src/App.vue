@@ -43,7 +43,7 @@
             <v-list-item
               v-if="item.action"
               :key="item.title"
-              @click="$router.push({ path: item.path })"
+              @click="$router.push({ path: item.path }).catch(err => {})"
             >
               <v-list-item-action>
                 <v-icon>{{ item.action }}</v-icon>
