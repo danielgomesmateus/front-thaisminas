@@ -4,7 +4,7 @@
       <v-row>
         <v-col cols="12" md="12">
           <h1 class="display-1 text-center">
-            {{ data.name }}
+            {{ project.name }}
           </h1>
         </v-col>
       </v-row>
@@ -12,7 +12,7 @@
     <v-container>
       <v-row>
         <v-col cols="12" md="12">
-          <div class="text-left" v-html="data.content">
+          <div class="text-left" v-html="project.content">
           </div>
         </v-col>
         <v-col cols="12" md="12">
@@ -50,12 +50,11 @@
   </v-app>
 </template>
 <script>
-  import axios from 'axios'
+  import { mapGetters } from 'vuex'
 
   export default {
     data() {
       return {
-        data: [],
         dialog: false
       }
     },
@@ -64,14 +63,18 @@
         this.dialog =  true
       }
     },
+    computed: {
+      ...mapGetters({
+        getProjectBySlug: 'project/getProjectBySlug'
+      }),
+      project() {
+        return this.getProjectBySlug
+      }
+    },
     created() {
       const slug = this.$route.params.slug
 
-      axios
-        .get(`${ process.env.VUE_APP_BASE_URL_API }projects/${ slug }`)
-        .then(response => {
-          this.data = response.data
-        })
+      this.$store.dispatch('project/getProjectBySlug', slug)
         .catch(e => {
           this.$router.push({ path: '/pagina-nao-encontrada' })
           console.error(e.message)

@@ -1,5 +1,7 @@
 import ProjectService from '../../services/ProjectService'
 
+import _ from 'lodash'
+
 export const namespaced = true
 
 export const state = {
@@ -52,6 +54,7 @@ export const getters = {
     return state.projects
   },  
   getProjectBySlug: state => slug => {
-    return state.projects.find(project => project.slug == slug)
+    const projects = state.projects.results
+    return _.find(projects, function(project) { return project.slug == slug })
   }
 }
