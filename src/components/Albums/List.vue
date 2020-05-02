@@ -1,9 +1,9 @@
 <template>  
   <v-row>
-    <v-col cols="12" md="12" v-if="albums.count == 0">    
+    <v-col cols="12" md="12" v-if="count == 0">    
       <alert :alert="alert" />
     </v-col>
-    <v-col cols="12" md="12" v-if="title && albums.count >= 1">
+    <v-col cols="12" md="12" v-if="title && count >= 1">
       <h1 class="title content-title">
         {{ title }}
         <v-chip
@@ -15,13 +15,13 @@
             left
             class="green darken-4"
           >
-            {{ albums.count }}
+            {{ count }}
           </v-avatar>
           álbums
         </v-chip>
       </h1>
     </v-col>
-    <v-col cols="12" md="4" v-for="(album, index) in albums.results" :key="index">
+    <v-col cols="12" md="4" v-for="(album, index) in albums" :key="index">
       <v-card
         class="mx-auto"
       >
@@ -67,7 +67,7 @@
     components: {
       'alert': Alert
     },
-    props: ['title', 'albums'],
+    props: ['title', 'albums', 'count'],
     data() {
       return {
         alert: {

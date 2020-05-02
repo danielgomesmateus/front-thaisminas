@@ -23,7 +23,7 @@ export const actions = {
         commit('SET_PAGES', response.data)
       })
       .catch(e => {
-        console.log(e.message)
+        console.error(e.message)
       })
   },
   getPageBySlug({ commit, state }, slug) {

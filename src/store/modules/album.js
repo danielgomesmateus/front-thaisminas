@@ -25,7 +25,7 @@ export const actions = {
         commit('SET_ALBUMS', response.data)
       })
       .catch(e => {
-        console.log(e.message)
+        console.error(e.message)
       })
   },
   getAlbumBySlug({ commit, getters, state }, slug) {

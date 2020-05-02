@@ -15,5 +15,5 @@ export default {
   },
   getProjectBySlug(slug) {
     return apiClient.get(`/projects/${ slug }`)
-  },
+  }
 }

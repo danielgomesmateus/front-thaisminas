@@ -119,6 +119,8 @@
 <script>
   import Help from './components/Dialogs/Help'
 
+  import { mapGetters, mapActions } from 'vuex'
+
   export default {
     name: 'App',
     components: {
@@ -144,6 +146,43 @@
       ],
       donation: true,
       contact: true
-    })
+    }),
+    computed: {
+      ...mapGetters({
+        getProjectsCategoriesGetter: 'projectCategory/getProjectsCategories'
+      })
+    },
+    methods: {
+      ...mapActions({
+        getProjectsAction: 'project/getProjects',
+        getAlbumsAction: 'album/getAlbums',
+        getProjectsCategoriesAction: 'projectCategory/getProjectsCategories',
+        getSlidesAction: 'slide/getSlides'
+      })
+    },
+    created() {
+      this.getProjectsAction()       
+      this.getAlbumsAction()
+      this.getSlidesAction()
+
+      this.getProjectsCategoriesAction()
+        .then(() => {
+          const projectsCategories = this.getProjectsCategoriesGetter.results
+
+          projectsCategories.forEach(projectCategory => {
+            this.items.push({ 
+              title: projectCategory.name,
+              action: 'mdi-label',
+              path: `/projeto-categoria/${ projectCategory.slug }` 
+            })
+          })
+        })
+    }
   };
 </script>
+
+<style>
+  .container {
+    padding: 0px;
+  }
+</style>

@@ -1,5 +1,5 @@
 <template>
-  <v-container fluid>
+  <v-container>
     <div class="white--text">
       Quer saber como pode nos ajudar? Clique <a href="#" @click="dialog=true">aqui</a> e saiba mais.
       <v-icon color="red accent-4">mdi-heart</v-icon>

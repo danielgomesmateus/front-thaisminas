@@ -10,10 +10,7 @@ const apiClient = axios.create({
 })
 
 export default {
-  getAlbums() {
-    return apiClient.get(`/galleries/`)
-  },
-  getAlbumBySlug(slug) {
-    return apiClient.get(`/galleries/${ slug }`)
+  getSlides() {
+    return apiClient.get(`/slides/`)
   }
 }

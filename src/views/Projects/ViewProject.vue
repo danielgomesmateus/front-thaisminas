@@ -1,6 +1,6 @@
 <template>
   <v-app>
-    <v-container fluid>
+    <v-container>
       <v-row>
         <v-col cols="12" md="12">
           <h1 class="display-1 text-center">
@@ -50,29 +50,27 @@
   </v-app>
 </template>
 <script>
+  import { mapGetters } from 'vuex'
+
   export default {
     data() {
       return {
-        dialog: false,
-        project: {}
+        dialog: false
+      }
+    },
+    computed: {
+      ...mapGetters({
+        getProjectBySlugGetter: 'project/getProjectBySlug'
+      }),
+      project() {
+        const slug = this.$route.params.slug     
+        return this.getProjectBySlugGetter(slug)
       }
     },
     methods: {
       downloadProject() {
         this.dialog =  true
       }
-    },
-    created() {
-      const slug = this.$route.params.slug
-
-      this.$store.dispatch('project/getProjectBySlug', slug)
-        .then(project => {
-          this.project = project
-        })
-        .catch(e => {
-          this.$router.push({ path: '/pagina-nao-encontrada' })
-          console.error(e.message)
-        })
     }
   }
 </script>

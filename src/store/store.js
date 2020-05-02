@@ -5,6 +5,7 @@ import * as project from './modules/project'
 import * as album from './modules/album'
 import * as page from './modules/page'
 import * as projectCategory from './modules/projectCategory'
+import * as slide from './modules/slide'
 
 Vue.use(Vuex)
 
@@ -13,7 +14,8 @@ export default new Vuex.Store({
     project,
     album,
     page,
-    projectCategory
+    projectCategory,
+    slide
   },
   state: {
   }

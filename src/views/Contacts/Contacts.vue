@@ -1,6 +1,6 @@
 <template>
   <v-app>
-    <v-container fluid>
+    <v-container>
       <contact :title="title" />
     </v-container>
   </v-app>

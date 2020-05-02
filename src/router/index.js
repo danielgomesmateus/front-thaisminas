@@ -155,7 +155,7 @@ export default new VueRouter({
       }
     },
     { 
-      path: '/projeto-categorias/:slug', 
+      path: '/projeto-categoria/:slug', 
       component: ListCategoriesProjects, 
       meta: {
         title: 'TMinas - Categorias', 

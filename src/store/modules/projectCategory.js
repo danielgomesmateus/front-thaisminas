@@ -8,7 +8,7 @@ export const state = {
 }
 
 export const mutations = {
-  SET_PROJECT_CATEGORIES(state, projectsCategories) {
+  SET_PROJECTS_CATEGORIES(state, projectsCategories) {
     state.projectsCategories = projectsCategories
   },
   SET_PROJECT_CATEGORY(state, projectCategory) {
@@ -17,13 +17,13 @@ export const mutations = {
 }
 
 export const actions = {
-  getProjectsCategories({ commit }) {  
+  getProjectsCategories({ commit }) {
     return ProjectCategoryService.getProjectsCategories()
       .then(response => {
-        commit('SET_PROJECT_CATEGORIES', response.data)
+        commit('SET_PROJECTS_CATEGORIES', response.data)
       })
       .catch(e => {
-        console.log(e.message)
+        console.error(e.message)
       })
   },
   getProjectCategoryBySlug({ commit, state }, slug) {
@@ -31,17 +31,13 @@ export const actions = {
       return state.projectCategory
     }
 
-    let projectCategory = getters.getProjectCategoryBySlug(slug)
-
-    if (projectCategory) {
-      commit('SET_PROJECT_CATEGORY', projectCategory)
-      return projectCategory
-    }
-
     return ProjectCategoryService.getProjectCategoryBySlug(slug)
       .then(response => {
         commit('SET_PROJECT_CATEGORY', response.data)
         return response.data
+      })
+      .catch(e => {
+        console.error(e.message)
       })
   }
 }
@@ -50,7 +46,7 @@ export const getters = {
   getProjectsCategories: state => {
     return state.projectsCategories
   },  
-  getProjectCategoryBySlug: state => slug => {
-    return state.projectsCategories.find(projectCategory => projectCategory.slug == slug)
+  getProjectCategoryBySlug: state => {
+    return state.projectCategory
   }
 }

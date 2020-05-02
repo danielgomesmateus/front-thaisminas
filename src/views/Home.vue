@@ -1,17 +1,22 @@
 <template>
-  <v-container fluid>
-    <v-row>
-      <v-carousel :show-arrows="true" v-if="images.length >= 1">
-        <v-carousel-item
-          v-for="(image, index) in images"
-          :key="index"
-          :src="image.src"
-        ></v-carousel-item>
-      </v-carousel>
-    </v-row>
-    <list-projects :title="titleProjects" :projects="projects" />
-    <list-albums :title="titleAlbums" :albums="albums" />
-  </v-container>
+  <v-app>
+    <v-container fluid>
+      <v-row>
+        <v-carousel :show-arrows="true" v-if="slides_count">
+          <v-carousel-item
+            v-for="(slide, index) in slides"
+            :key="index"
+            :src="slide.image"
+            :options="options"
+          ></v-carousel-item>
+        </v-carousel>
+      </v-row>
+    </v-container>
+    <v-container>
+      <list-projects :title="titleProjects" :projects="projects" :count="projects_count" />
+      <list-albums :title="titleAlbums" :albums="albums" :count="albums_count" />
+    </v-container>
+  </v-app>
 </template>
 
 <script>
@@ -30,26 +35,35 @@
         titleProjects: 'Conheça meus projetos',
         titleAlbums: 'Fotos de eventos',
         slide: 0,
-        images: []
+        options: {
+          slideshowInterval: 3000
+        }
       }
     },
     computed: {
       ...mapGetters({
         getProjects: 'project/getProjects',
-        getProjectBySlug: 'project/getProjectBySlug',
         getAlbums: 'album/getAlbums',
-        getAlbumBySlug: 'album/getAlbumBySlug'
+        getSlides: 'slide/getSlides'
       }),
       projects() {
-        return this.getProjects
+        return this.getProjects.results
+      },
+      projects_count() {
+        return this.getProjects.count
       },
       albums() {
-        return this.getAlbums
+        return this.getAlbums.results
+      },
+      albums_count() {
+        return this.getAlbums.count
+      },
+      slides() {
+        return this.getSlides.results
+      },
+      slides_count() {
+        return this.getSlides.count
       }
-    },
-    created() {
-      this.$store.dispatch('project/getProjects')
-      this.$store.dispatch('album/getAlbums')
     }
   }
 </script>

@@ -1,7 +1,7 @@
 <template>
   <v-app>
-    <v-container fluid>
-      <list-albums :title="title" :albums="albums" />
+    <v-container>
+      <list-albums :title="title" :albums="albums" :count="albums_count" />
     </v-container>
   </v-app>
 </template>
@@ -22,15 +22,14 @@
     },
     computed: {
       ...mapGetters({
-        getAlbums: 'album/getAlbums',
-        getAlbumBySlug: 'album/getAlbumBySlug'
+        getAlbums: 'album/getAlbums'
       }),
       albums() {
-        return this.getAlbums
+        return this.getAlbums.results
+      },
+      albums_count() {
+        return this.getAlbums.count
       }
-    },
-    created() {
-      this.$store.dispatch('album/getAlbums')
     }
   }
 </script>

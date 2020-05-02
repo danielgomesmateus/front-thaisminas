@@ -15,5 +15,5 @@ export default {
   },
   getPageBySlug(slug) {
     return apiClient.get(`/pages/${ slug }`)
-  },
+  }
 }

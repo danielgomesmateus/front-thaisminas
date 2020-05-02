@@ -15,5 +15,5 @@ export default {
   },
   getProjectCategoryBySlug(slug) {
     return apiClient.get(`/projects-categories/${ slug }`)
-  },
+  }
 }

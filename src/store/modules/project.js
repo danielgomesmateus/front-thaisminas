@@ -25,7 +25,7 @@ export const actions = {
         commit('SET_PROJECTS', response.data)
       })
       .catch(e => {
-        console.log(e.message)
+        console.error(e.message)
       })
   },
   getProjectBySlug({ commit, getters, state }, slug) {

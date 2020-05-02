@@ -1,9 +1,9 @@
 <template>  
   <v-row>
-    <v-col cols="12" md="12" v-if="projects.count == 0">    
+    <v-col cols="12" md="12" v-if="count == 0">    
       <alert :alert="alert" />
     </v-col>
-    <v-col cols="12" md="12" v-if="title && projects.count >= 1">
+    <v-col cols="12" md="12" v-if="title && count >= 1">
       <h1 class="title content-title">
         {{ title }}
         <v-chip
@@ -15,13 +15,13 @@
             left
             class="green darken-4"
           >
-            {{ projects.count }}
+            {{ count }}
           </v-avatar>
           projetos
         </v-chip>
       </h1>
     </v-col>
-    <v-col cols="12" md="4" v-for="(project, index) in projects.results" :key="index">
+    <v-col cols="12" md="4" v-for="(project, index) in projects" :key="index">
       <v-card
         class="mx-auto"
       >
@@ -56,7 +56,7 @@
     components: {
       'alert': Alert
     },
-    props: ['title', 'projects'],
+    props: ['title', 'projects', 'count'],
     data() {
       return {
         alert: {

@@ -1,7 +1,7 @@
 <template>
   <v-app>
-    <v-container fluid>
-      <list-projects :title="title" :projects="projects" />
+    <v-container>
+      <list-projects :title="title" :projects="projects" :count="projects_count" />
     </v-container>
   </v-app>
 </template>
@@ -22,15 +22,14 @@
     },
     computed: {
       ...mapGetters({
-        getProjects: 'project/getProjects',
-        getProjectBySlug: 'project/getProjectBySlug'
+        getProjectsGetter: 'project/getProjects'
       }),
       projects() {
-        return this.getProjects
+        return this.getProjectsGetter.results
+      },
+      projects_count() {
+        return this.getProjectsGetter.count
       }
-    },
-    created() {
-      this.$store.dispatch('project/getProjects')
     }
   }
 </script>

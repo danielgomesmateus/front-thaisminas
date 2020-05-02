@@ -1,6 +1,6 @@
 <template>
   <v-app>
-    <v-container fluid>
+    <v-container>
       <v-row>
         <v-col cols="12" md="12">
           <h1 class="display-1 text-center">
@@ -45,6 +45,8 @@
 <script>
   import VueGallery from 'vue-gallery'
 
+  import { mapGetters } from 'vuex'
+
   export default {
     components: {
       'gallery': VueGallery
@@ -52,29 +54,29 @@
     data() {
       return {
         dialog: false,
-        index: null,
-        album: {},
-        images: [],
-        count_photos: 0
+        index: null
       }
     },
-    created() {
-      const slug = this.$route.params.slug
+    computed: {
+      ...mapGetters({
+        getAlbumBySlugGetter: 'album/getAlbumBySlug'
+      }),
+      album() {
+        const slug = this.$route.params.slug
+        return this.getAlbumBySlugGetter(slug)
+      },
+      images() {
+        const images = []
 
-      this.$store.dispatch('album/getAlbumBySlug', slug)
-        .then(album => {
-          this.album = album
-
-          album.photos.forEach(image => {
-            this.images.push(image.photo)
-          })
-
-          this.count_photos = this.images.length
+        this.album.photos.forEach(image => {
+          images.push(image.photo)
         })
-        .catch(e => {
-          this.$router.push({ path: '/pagina-nao-encontrada' })
-          console.error(e.message)
-        })
+
+        return images
+      },
+      count_photos() {
+        return this.images.length
+      }
     }
   }
 </script>
