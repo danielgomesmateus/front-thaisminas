@@ -1,5 +1,7 @@
 import PageService from '../../services/PageService'
 
+import _ from 'lodash'
+
 export const namespaced = true
 
 export const state = {
@@ -26,16 +28,18 @@ export const actions = {
         console.error(e.message)
       })
   },
-  getPageBySlug({ commit, state }, slug) {
+  getPageBySlug({ commit, getters, state }, slug) {
     if (slug == state.page.slug) {
       return state.page
     }
 
-    let page = getters.getPageBySlug(slug)
+    if (state.pages.count >= 1) {
+      let page = getters.getPageBySlug(slug)
 
-    if (page) {
-      commit('SET_PAGE', page)
-      return page
+      if (page) {
+        commit('SET_PAGE', page)
+        return page
+      }
     }
 
     return PageService.getPageBySlug(slug)
@@ -51,6 +55,7 @@ export const getters = {
     return state.pages
   },  
   getPageBySlug: state => slug => {
-    return state.pages.find(page => page.slug == slug)
+    const pages = state.pages.results
+    return _.find(pages, function(page) { return page.slug == slug })
   }
 }

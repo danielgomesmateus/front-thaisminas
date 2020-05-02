@@ -92,6 +92,25 @@
         <v-divider></v-divider>
 
         <v-card-text>
+          <v-row
+            justify="center"
+            no-gutters
+          >
+            <v-btn
+              v-for="(page, index) in pages"
+              :key="index"
+              color="white"
+              text
+              @click="$router.push({ path: `/pagina/${ page.slug }` }).catch(err => {})"
+            >
+              {{ page.title }}
+            </v-btn>
+          </v-row>
+        </v-card-text>
+
+        <v-divider></v-divider>
+
+        <v-card-text>
           <v-btn
             v-for="icon in icons"
             :key="icon"
@@ -119,7 +138,7 @@
 <script>
   import Help from './components/Dialogs/Help'
 
-  import { mapGetters, mapActions } from 'vuex'
+  import { mapGetters, mapActions, mapState } from 'vuex'
 
   export default {
     name: 'App',
@@ -127,62 +146,37 @@
       'help': Help
     },
     data: () => ({
-      data: [],
-      categories: [],
-      icons: [
-        'mdi-facebook',
-        'mdi-twitter',
-        'mdi-linkedin',
-        'mdi-instagram',
-      ],
-      items: [
-        { title: 'Home', action: 'mdi-home', path: '/' },
-        { title: 'Projetos', action: 'mdi-projector', path: '/projetos' },
-        { title: 'Álbums', action: 'mdi-image-search-outline', path: '/albums'  },
-        { title: 'Fale Conosco', action: 'mdi-email-newsletter', path: '/fale-conosco'  },
-        { divider: true },
-        { header: 'Categorias de projeto' },
-        { divider: true },
-      ],
-      donation: true,
+      donation: false,
       contact: true
     }),
     computed: {
       ...mapGetters({
-        getProjectsCategoriesGetter: 'projectCategory/getProjectsCategories'
-      })
+        getProjectsCategoriesGetter: 'projectCategory/getProjectsCategories',
+        getPagesGetter: 'page/getPages',
+      }),
+      ...mapState({
+        icons: state => state.icons,
+        items: state => state.items
+      }),
+      pages() {
+        return this.getPagesGetter.results
+      }
     },
     methods: {
       ...mapActions({
         getProjectsAction: 'project/getProjects',
         getAlbumsAction: 'album/getAlbums',
         getProjectsCategoriesAction: 'projectCategory/getProjectsCategories',
-        getSlidesAction: 'slide/getSlides'
+        getSlidesAction: 'slide/getSlides',
+        getPagesAction: 'page/getPages'
       })
     },
     created() {
       this.getProjectsAction()       
       this.getAlbumsAction()
       this.getSlidesAction()
-
       this.getProjectsCategoriesAction()
-        .then(() => {
-          const projectsCategories = this.getProjectsCategoriesGetter.results
-
-          projectsCategories.forEach(projectCategory => {
-            this.items.push({ 
-              title: projectCategory.name,
-              action: 'mdi-label',
-              path: `/projeto-categoria/${ projectCategory.slug }` 
-            })
-          })
-        })
+      this.getPagesAction()
     }
-  };
-</script>
-
-<style>
-  .container {
-    padding: 0px;
   }
-</style>
+</script>

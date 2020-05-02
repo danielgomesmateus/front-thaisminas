@@ -67,3 +67,9 @@
     }
   }
 </script>
+
+<style>
+  .container--fluid {
+    padding: 0px;
+  }
+</style>

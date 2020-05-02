@@ -18,5 +18,17 @@ export default new Vuex.Store({
     slide
   },
   state: {
+    icons: [
+      'mdi-facebook',
+      'mdi-twitter',
+      'mdi-linkedin',
+      'mdi-instagram',
+    ],
+    items: [
+      { title: 'Home', action: 'mdi-home', path: '/' },
+      { title: 'Projetos', action: 'mdi-projector', path: '/projetos' },
+      { title: 'Álbums', action: 'mdi-image-search-outline', path: '/albums'  },
+      { title: 'Fale Conosco', action: 'mdi-email-newsletter', path: '/fale-conosco'  }
+    ]
   }
 })

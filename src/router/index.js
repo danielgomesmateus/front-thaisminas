@@ -13,6 +13,8 @@ import ListCategoriesProjects from '../views/Projects/ListCategoriesProjects'
 import ListAlbums from '../views/Galleries/ListAlbums'
 import ViewAlbum from '../views/Galleries/ViewAlbum'
 
+import ViewPage from '../views/Pages/ViewPage'
+
 Vue.use(VueRouter)
 
 export default new VueRouter({
@@ -167,6 +169,23 @@ export default new VueRouter({
           {
             property: 'og:description',
             content: 'TMinas - Categorias'
+          }
+        ]
+      }
+    },
+    { 
+      path: '/pagina/:slug', 
+      component: ViewPage, 
+      meta: {
+        title: 'TMinas - Página', 
+        metaTags: [
+          {
+            name: 'description',
+            content: 'TMinas - Página'
+          },
+          {
+            property: 'og:description',
+            content: 'TMinas - Página'
           }
         ]
       }
