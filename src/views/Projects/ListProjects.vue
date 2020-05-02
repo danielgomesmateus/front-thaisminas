@@ -1,13 +1,15 @@
 <template>
   <v-app>
-    <v-container fluid>
-      <list-projects :title="title" />
+    <v-container>
+      <list-projects :title="title" :projects="projects" :count="projects_count" />
     </v-container>
   </v-app>
 </template>
 
 <script>
   import ListProjects from '../../components/Projects/List'
+
+  import { mapGetters } from 'vuex'
 
   export default {
     components: {
@@ -16,10 +18,17 @@
     data() {
       return {
         title: '',
-        alert: {
-          value: false,
-          message: ''
-        }
+      }
+    },
+    computed: {
+      ...mapGetters({
+        getProjectsGetter: 'project/getProjects'
+      }),
+      projects() {
+        return this.getProjectsGetter.results
+      },
+      projects_count() {
+        return this.getProjectsGetter.count
       }
     }
   }

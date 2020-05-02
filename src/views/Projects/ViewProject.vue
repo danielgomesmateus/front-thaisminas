@@ -1,10 +1,10 @@
 <template>
   <v-app>
-    <v-container fluid>
+    <v-container>
       <v-row>
         <v-col cols="12" md="12">
           <h1 class="display-1 text-center">
-            {{ data.name }}
+            {{ project.name }}
           </h1>
         </v-col>
       </v-row>
@@ -12,7 +12,7 @@
     <v-container>
       <v-row>
         <v-col cols="12" md="12">
-          <div class="text-left" v-html="data.content">
+          <div class="text-left" v-html="project.content">
           </div>
         </v-col>
         <v-col cols="12" md="12">
@@ -50,32 +50,27 @@
   </v-app>
 </template>
 <script>
-  import axios from 'axios'
+  import { mapGetters } from 'vuex'
 
   export default {
     data() {
       return {
-        data: [],
         dialog: false
+      }
+    },
+    computed: {
+      ...mapGetters({
+        getProjectBySlugGetter: 'project/getProjectBySlug'
+      }),
+      project() {
+        const slug = this.$route.params.slug     
+        return this.getProjectBySlugGetter(slug)
       }
     },
     methods: {
       downloadProject() {
         this.dialog =  true
       }
-    },
-    mounted() {
-      const slug = this.$route.params.slug
-
-      axios
-        .get(`http://localhost:8000/v1/projects/${ slug }`)
-        .then(response => {
-          this.data = response.data
-        })
-        .catch(e => {
-          this.$router.push({ path: '/pagina-nao-encontrada' })
-          console.error(e.message)
-        })
     }
   }
 </script>

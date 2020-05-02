@@ -43,7 +43,7 @@
             <v-list-item
               v-if="item.action"
               :key="item.title"
-              @click="$router.push({ path: item.path })"
+              @click="$router.push({ path: item.path }).catch(err => {})"
             >
               <v-list-item-action>
                 <v-icon>{{ item.action }}</v-icon>
@@ -71,9 +71,11 @@
     </v-app-bar>
 
     <v-content>
-      <router-view/>
+      <vue-page-transition name="zoom">
+        <router-view />
+      </vue-page-transition>
     </v-content>
-    
+  
     <v-footer
       dark
       padless
@@ -81,8 +83,33 @@
       <v-card
         flat
         tile
-        class="blue darken-4 white--text text-center"
+        class="orange accent-3 white--text text-center"
       >
+        <v-card-text class="black">
+          <help :donation="donation" :contact="contact" />
+        </v-card-text>
+
+        <v-divider></v-divider>
+
+        <v-card-text>
+          <v-row
+            justify="center"
+            no-gutters
+          >
+            <v-btn
+              v-for="(page, index) in pages"
+              :key="index"
+              color="white"
+              text
+              @click="$router.push({ path: `/pagina/${ page.slug }` }).catch(err => {})"
+            >
+              {{ page.title }}
+            </v-btn>
+          </v-row>
+        </v-card-text>
+
+        <v-divider></v-divider>
+
         <v-card-text>
           <v-btn
             v-for="icon in icons"
@@ -94,14 +121,14 @@
           </v-btn>
         </v-card-text>
   
-        <v-card-text class="white--text pt-0">
+        <v-card-text class="white--text">
           Phasellus feugiat arcu sapien, et iaculis ipsum elementum sit amet. Mauris cursus commodo interdum. Praesent ut risus eget metus luctus accumsan id ultrices nunc. Sed at orci sed massa consectetur dignissim a sit amet dui. Duis commodo vitae velit et faucibus. Morbi vehicula lacinia malesuada. Nulla placerat augue vel ipsum ultrices, cursus iaculis dui sollicitudin. Vestibulum eu ipsum vel diam elementum tempor vel ut orci. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.
         </v-card-text>
   
         <v-divider></v-divider>
   
         <v-card-text class="white--text">
-          {{ new Date().getFullYear() }} — <strong>Vuetify</strong>
+          {{ new Date().getFullYear() }} — <strong>Thaís Minas</strong>
         </v-card-text>
       </v-card>
     </v-footer>
@@ -109,49 +136,47 @@
 </template>
 
 <script>
-  import axios from 'axios'
+  import Help from './components/Dialogs/Help'
+
+  import { mapGetters, mapActions, mapState } from 'vuex'
 
   export default {
     name: 'App',
+    components: {
+      'help': Help
+    },
     data: () => ({
-      data: [],
-      categories: [],
-      icons: [
-        'fab fa-facebook',
-        'fab fa-twitter',
-        'fab fa-google-plus',
-        'fab fa-linkedin',
-        'fab fa-instagram',
-      ],
-      items: [
-        { title: 'Home', action: 'mdi-home', path: '/' },
-        { title: 'Projetos', action: 'mdi-projector', path: '/projetos' },
-        { title: 'Álbums', action: 'mdi-image-search-outline', path: '/albums'  },
-        { title: 'Fale Conosco', action: 'mdi-email-newsletter', path: '/fale-conosco'  },
-        { divider: true },
-        { header: 'Categorias de projeto' },
-        { divider: true },
-      ]
+      donation: false,
+      contact: true
     }),
-    mounted() {
-      axios
-        .get(`http://localhost:8000/v1/projects-categories/`)
-        .then(response => {
-          if (response.data.results && response.data.results.length >= 1) {
-            this.data = response.data.results
-            this.data.forEach(categorie => {
-              this.items.push({ title: categorie.name, action: 'mdi-label', path: `/projeto-categorias/${ categorie.slug }`  })
-            })
-          }
-          else {
-            this.alert.value = true
-            this.alert.message = 'Ainda não temos nenhum projeto publicado por aqui.'
-          }          
-        })
-        .catch(e => {
-          this.alert.value = true
-          this.alert.message = e.message
-        })    
+    computed: {
+      ...mapGetters({
+        getProjectsCategoriesGetter: 'projectCategory/getProjectsCategories',
+        getPagesGetter: 'page/getPages',
+      }),
+      ...mapState({
+        icons: state => state.icons,
+        items: state => state.items
+      }),
+      pages() {
+        return this.getPagesGetter.results
+      }
+    },
+    methods: {
+      ...mapActions({
+        getProjectsAction: 'project/getProjects',
+        getAlbumsAction: 'album/getAlbums',
+        getProjectsCategoriesAction: 'projectCategory/getProjectsCategories',
+        getSlidesAction: 'slide/getSlides',
+        getPagesAction: 'page/getPages'
+      })
+    },
+    created() {
+      this.getProjectsAction()       
+      this.getAlbumsAction()
+      this.getSlidesAction()
+      this.getProjectsCategoriesAction()
+      this.getPagesAction()
     }
-  };
+  }
 </script>

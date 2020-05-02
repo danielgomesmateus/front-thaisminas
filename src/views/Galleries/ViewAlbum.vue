@@ -1,11 +1,14 @@
 <template>
   <v-app>
-    <v-container fluid>
+    <v-container>
       <v-row>
         <v-col cols="12" md="12">
           <h1 class="display-1 text-center">
-            {{ data.name }}
+            {{ album.name }}
           </h1>
+          <h2 class="subtitle-1 text-center">
+            {{ album.description_short }}
+          </h2>
           <div class="text-center">
             <v-chip
               class="ma-2"
@@ -40,8 +43,9 @@
   </v-app>
 </template>
 <script>
-  import axios from 'axios'
   import VueGallery from 'vue-gallery'
+
+  import { mapGetters } from 'vuex'
 
   export default {
     components: {
@@ -49,28 +53,30 @@
     },
     data() {
       return {
-        data: [],
         dialog: false,
-        images: [],
-        index: null,
-        count_photos: 0
+        index: null
       }
     },
-    mounted() {
-      const slug = this.$route.params.slug
-      axios
-        .get(`http://localhost:8000/v1/galleries/${ slug }`)
-        .then(response => {
-          this.data = response.data
-          this.data.photos.forEach(image => {
-            this.images.push(image.photo)
-            this.count_photos = this.images.length
-          })
+    computed: {
+      ...mapGetters({
+        getAlbumBySlugGetter: 'album/getAlbumBySlug'
+      }),
+      album() {
+        const slug = this.$route.params.slug
+        return this.getAlbumBySlugGetter(slug)
+      },
+      images() {
+        const images = []
+
+        this.album.photos.forEach(image => {
+          images.push(image.photo)
         })
-        .catch(e => {
-          this.$router.push({ path: '/pagina-nao-encontrada' })
-          console.error(e.message)
-        })
+
+        return images
+      },
+      count_photos() {
+        return this.images.length
+      }
     }
   }
 </script>

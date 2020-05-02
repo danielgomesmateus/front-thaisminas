@@ -1,10 +1,10 @@
 <template>  
-  <v-row>    
-    <v-col cols="12" md="12" v-if="alert.value">
-      <alert :alert="alert" :type="type" />
+  <v-row>
+    <v-col cols="12" md="12" v-if="count == 0">    
+      <alert :alert="alert" />
     </v-col>
-    <v-col cols="12" md="12" v-if="title && !alert.value">
-      <h1 class="headline content-title">
+    <v-col cols="12" md="12" v-if="title && count >= 1">
+      <h1 class="title content-title">
         {{ title }}
         <v-chip
           class="float-right"
@@ -50,8 +50,8 @@
         </v-card-text>
 
         <v-card-actions>
-          <v-btn small color="primary" dark @click="$router.push({ path: `/album/${ album.slug }` })">
-            <v-icon>mdi-magnify</v-icon> Visualizar
+          <v-btn small color="info" dark @click="$router.push({ path: `/album/${ album.slug }` }).catch(err => {})">
+            <v-icon>mdi-magnify</v-icon> <span class="font-weight-bold">Visualizar</span>
           </v-btn>
         </v-card-actions>
       </v-card>
@@ -61,44 +61,21 @@
 
 <script>
   import Alert from '../../components/Alerts/Alert'
-  import axios from 'axios'
   
   export default {
     name: 'ListAlbums',
     components: {
       'alert': Alert
     },
-    props: ['title'],
+    props: ['title', 'albums', 'count'],
     data() {
       return {
-        albums: [],
-        count: 0,
         alert: {
-          value: false,
-          message: ''
-        },
-        type: ''
+          value: true,
+          type: 'warning',
+          message: 'Nenhum álbum publicado por aqui ainda.'
+        }
       }
-    },
-    mounted() {
-      axios
-        .get(`http://localhost:8000/v1/galleries/`)
-        .then(response => {
-          if (response.data.results && response.data.results.length >= 1) {
-            this.albums = response.data.results
-            this.count = response.data.count
-          }
-          else {
-            this.alert.value = true
-            this.alert.message = 'Ainda não temos nenhum álbum publicado por aqui.'
-            this.type = 'warning'
-          } 
-        })
-        .catch(e => {
-          this.alert.value = true
-          this.alert.message = e.message
-          this.type = 'error'
-        })
-    } 
+    }
   }
 </script>
