@@ -30,7 +30,7 @@
 
         <v-text-field
           v-model="contact.phone"
-          v-mask="'(##)#####-####'"
+          v-mask="['(##) ####-####', '(##) #####-####']"
           :rules="phoneRules"
           label="Telefone"
           required

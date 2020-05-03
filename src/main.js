@@ -3,7 +3,7 @@ import App from './App'
 
 import vuetify from './plugins/vuetify'
 import VuePageTransition from 'vue-page-transition'
-import VueMask from 'v-mask' 
+import VueTheMask from 'vue-the-mask' 
 
 import router from './router/index'
 import store from './store/store'
@@ -38,7 +38,7 @@ router.beforeEach((to, from, next) => {
 Vue.config.productionTip = false
 
 Vue.use(VuePageTransition)
-Vue.use(VueMask)
+Vue.use(VueTheMask)
 
 new Vue({
   vuetify,
