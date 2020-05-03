@@ -18,11 +18,15 @@ export default new Vuex.Store({
     slide
   },
   state: {
-    icons: [
-      'mdi-facebook',
-      'mdi-twitter',
-      'mdi-linkedin',
-      'mdi-instagram',
+    socialNetworks: [
+      { 
+        icon: 'mdi-linkedin', 
+        link: 'https://www.linkedin.com/in/thaís-minas-b529a679/' 
+      },
+      { 
+        icon: 'mdi-instagram',
+        link: 'https://www.instagram.com/thaisminas/' 
+      },
     ],
     items: [
       { title: 'Home', action: 'mdi-home', path: '/' },

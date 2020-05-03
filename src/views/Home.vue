@@ -1,14 +1,27 @@
 <template>
   <v-app>
-    <v-container fluid>
+    <v-container fluid hidden-sm-and-down>
       <v-row>
-        <v-carousel :show-arrows="true" v-if="slides_count">
+        <v-carousel 
+          v-if="slides_count"
+          cycle
+          height="500"
+          hide-delimiter-background
+          show-arrows-on-hover
+        >
           <v-carousel-item
             v-for="(slide, index) in slides"
             :key="index"
             :src="slide.image"
-            :options="options"
-          ></v-carousel-item>
+          >
+            <v-row
+              class="fill-height"
+              align="center"
+              justify="center"
+            >
+              <div class="display-3 white--text">{{ slide.title }}</div>
+            </v-row>
+          </v-carousel-item>
         </v-carousel>
       </v-row>
     </v-container>
@@ -32,8 +45,8 @@
     },
     data() {
       return {
-        titleProjects: 'Conheça meus projetos',
-        titleAlbums: 'Fotos de eventos',
+        titleProjects: 'Projetos',
+        titleAlbums: 'Eventos',
         slide: 0,
         options: {
           slideshowInterval: 3000

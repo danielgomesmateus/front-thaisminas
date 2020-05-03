@@ -84,6 +84,7 @@
         flat
         tile
         class="orange accent-3 white--text text-center"
+        width="100%"
       >
         <v-card-text class="black">
           <help :donation="donation" :contact="contact" />
@@ -112,17 +113,19 @@
 
         <v-card-text>
           <v-btn
-            v-for="icon in icons"
-            :key="icon"
+            v-for="item in socialNetworks"
+            :key="item"
+            :href="item.link" 
+            target="_blank"
             class="mx-4 white--text"
             icon
           >
-            <v-icon size="24px">{{ icon }}</v-icon>
+            <v-icon size="24px">{{ item.icon }}</v-icon>
           </v-btn>
         </v-card-text>
   
-        <v-card-text class="white--text">
-          Phasellus feugiat arcu sapien, et iaculis ipsum elementum sit amet. Mauris cursus commodo interdum. Praesent ut risus eget metus luctus accumsan id ultrices nunc. Sed at orci sed massa consectetur dignissim a sit amet dui. Duis commodo vitae velit et faucibus. Morbi vehicula lacinia malesuada. Nulla placerat augue vel ipsum ultrices, cursus iaculis dui sollicitudin. Vestibulum eu ipsum vel diam elementum tempor vel ut orci. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.
+        <v-card-text class="white--text text-center">
+          "Bem-aventurado o homem que acha sabedoria, e o homem que adquire conhecimento." - Provérbios 3:13
         </v-card-text>
   
         <v-divider></v-divider>
@@ -155,7 +158,7 @@
         getPagesGetter: 'page/getPages',
       }),
       ...mapState({
-        icons: state => state.icons,
+        socialNetworks: state => state.socialNetworks,
         items: state => state.items
       }),
       pages() {

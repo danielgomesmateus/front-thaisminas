@@ -15,7 +15,9 @@
           <div class="text-left" v-html="project.content">
           </div>
         </v-col>
+        <!--
         <v-col cols="12" md="12">
+
           <v-btn
             color="success"
             class="ma-2 white--text"
@@ -45,6 +47,7 @@
             </v-card>
           </v-dialog>
         </v-col>
+        -->
       </v-row>
     </v-container>
   </v-app>
