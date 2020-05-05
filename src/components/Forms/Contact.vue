@@ -30,7 +30,7 @@
 
         <v-text-field
           v-model="contact.phone"
-          v-mask="['(##) ####-####', '(##) #####-####']"
+          v-mask="['(##)#####-####']"
           :rules="phoneRules"
           label="Telefone"
           required
@@ -96,7 +96,7 @@
       ],
       phoneRules: [
         v => !!v || 'Informe o seu telefone de contato',
-        v => (v && v.length <= 16) || 'O telefone informado é inválido',        
+        v => (v && v.length == 14) || 'O telefone informado é inválido',        
       ],
       messageRules: [
         v => !!v || 'Informe o motivo do contato',
