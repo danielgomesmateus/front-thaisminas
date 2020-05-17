@@ -7,7 +7,7 @@
     >
       <div class="d-flex align-center">
         <v-img
-          alt="Vuetify Logo"
+          alt="TMinas logo"
           class="shrink mr-2"
           contain
           src="./assets/logo.png"
@@ -145,7 +145,6 @@
     }),
     computed: {
       ...mapGetters({
-        getProjectsCategoriesGetter: 'projectCategory/getProjectsCategories',
         getPagesGetter: 'page/getPages',
       }),
       ...mapState({

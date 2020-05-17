@@ -20,17 +20,35 @@
   </v-app>
 </template>
 <script>
-  import { mapGetters } from 'vuex'
+  import { mapActions } from 'vuex'
 
   export default {
-    computed: {
-      ...mapGetters({
-        getPageBySlugGetter: 'page/getPageBySlug'
-      }),
-      page() {
-        const slug = this.$route.params.slug
-        return this.getPageBySlugGetter(slug)
+    data() {
+      return {
+        page: {}
       }
+    },
+    methods: {
+      ...mapActions({
+        getPageBySlugAction: 'page/getPageBySlug'
+      })
+    },
+    mounted: function() {
+      const slug = this.$route.params.slug
+      
+      this.getPageBySlugAction(slug)
+        .then(response => {
+          if (response == undefined) {
+            this.$router.push({ path: '/pagina-nao-encontrada' })
+            return false
+          }
+
+          this.page = response
+        })
+        .catch(e => {
+          this.$router.push({ path: '/pagina-nao-encontrada' })
+          console.error(e.message)
+        })
     }
   }
 </script>

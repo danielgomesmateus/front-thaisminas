@@ -2,9 +2,6 @@
   <v-app>
     <v-container>
       <v-row>
-        <v-col cols="12" md="12" v-if="alert.value">    
-          <alert :alert="alert" />
-        </v-col>
         <v-col cols="12" md="12">
           <h1 class="display-1 text-center">
             {{ project.name }}
@@ -52,35 +49,20 @@
   </v-app>
 </template>
 <script>
-  import Alert from '../../components/Alerts/Alert'
-
-  import { mapGetters } from 'vuex'
+  import { mapActions } from 'vuex'
   import axios from 'axios'
 
   export default {
     data() {
       return {
-        dialog: false,
-        alert: {
-          value: false,
-          type: '',
-          message: ''
-        }
-      }
-    },
-    components: {
-      'alert': Alert
-    },
-    computed: {
-      ...mapGetters({
-        getProjectBySlugGetter: 'project/getProjectBySlug'
-      }),
-      project() {
-        const slug = this.$route.params.slug     
-        return this.getProjectBySlugGetter(slug)
+        project: {},
+        dialog: false
       }
     },
     methods: {
+      ...mapActions({
+        getProjectByActions: 'project/getProjectBySlug'
+      }),
       downloadProject() {
         this.dialog =  true
         
@@ -108,6 +90,23 @@
           this.alert.message = error.message
         })
       }
+    },
+    mounted: function() {
+      const slug = this.$route.params.slug     
+
+      this.getProjectByActions(slug)
+        .then(response => {
+          if (response == undefined) {
+            this.$router.push({ path: '/pagina-nao-encontrada' })
+            return false
+          }
+
+          this.project = response
+        })
+        .catch(e => {
+          this.$router.push({ path: '/pagina-nao-encontrada' })
+          console.error(e.message)
+        })
     }
   }
 </script>

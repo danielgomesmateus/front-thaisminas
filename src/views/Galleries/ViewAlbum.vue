@@ -17,7 +17,7 @@
               text-color="white"
             >
               <v-icon left>mdi-label</v-icon>
-              {{ count_photos }} fotos neste álbum
+              {{ album.count }} fotos neste álbum
             </v-chip>
           </div>
         </v-col>
@@ -25,14 +25,14 @@
     </v-container>
     <v-container>
       <v-row>
-        <gallery :images="images" :index="index" @close="index = null"></gallery>
+        <gallery :images="album.photos" :index="index" @close="index = null"></gallery>
         <v-col 
           cols="12" 
           md="3" 
           xs="12" 
           sm="12"
           class="image"
-          v-for="(image, imageIndex) in images"
+          v-for="(image, imageIndex) in album.photos"
           :key="imageIndex"
           @click="index = imageIndex"
           :style="{ backgroundImage: 'url(' + image + ')', width: '100%', height: '200px' }"
@@ -45,7 +45,7 @@
 <script>
   import VueGallery from 'vue-gallery'
 
-  import { mapGetters } from 'vuex'
+  import { mapActions } from 'vuex'
 
   export default {
     components: {
@@ -53,30 +53,43 @@
     },
     data() {
       return {
+        album: {
+          photos: [],
+          count: 0
+        },
         dialog: false,
         index: null
       }
     },
-    computed: {
-      ...mapGetters({
-        getAlbumBySlugGetter: 'album/getAlbumBySlug'
-      }),
-      album() {
-        const slug = this.$route.params.slug
-        return this.getAlbumBySlugGetter(slug)
-      },
-      images() {
-        const images = []
+    methods: {
+      ...mapActions({
+        getAlbumBySlugAction: 'album/getAlbumBySlug'
+      })
+    },
+    mounted: function() {
+      const slug = this.$route.params.slug
 
-        this.album.photos.forEach(image => {
-          images.push(image.photo)
+      this.getAlbumBySlugAction(slug)
+        .then(response => {
+          if (response == undefined) {
+            this.$router.push({ path: '/pagina-nao-encontrada' })
+            return false
+          }
+          
+          this.album = response
+
+          const images = []
+          response.photos.forEach(image => {
+            images.push(image.photo)
+          })
+
+          this.album.photos = images
+          this.album.count = images.length
         })
-
-        return images
-      },
-      count_photos() {
-        return this.images.length
-      }
+        .catch(e => {
+          this.$router.push({ path: '/pagina-nao-encontrada' })
+          console.error(e.message)
+        })      
     }
   }
 </script>
